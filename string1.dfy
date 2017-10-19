@@ -83,7 +83,7 @@ method haveCommonKSubstring(k: nat, str1: seq<char>, str2: seq<char>) returns (f
 	{
 		if !foundMatch
 		{
-			while j < |biggerString|
+			while j < |biggerString| && !foundMatch
 				invariant j >= 0
 			{
 				if smallerString[i] == biggerString[j]
@@ -99,6 +99,7 @@ method haveCommonKSubstring(k: nat, str1: seq<char>, str2: seq<char>) returns (f
 			if j + 1 >= |biggerString|
 			{
 				foundMatch := false;
+				matches := 0;
 			}
 			else
 			{
