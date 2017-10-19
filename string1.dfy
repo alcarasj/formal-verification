@@ -33,8 +33,7 @@ method isSubString(sub: seq<char>, str: seq<char>) returns (res: bool)
 	{
 		if j < |sub|
 		{
-			if str[i] == sub[j] 
-			{
+			if str[i] == sub[j] {
 				j := j + 1;
 			}
 		}
@@ -53,26 +52,75 @@ method isSubString(sub: seq<char>, str: seq<char>) returns (res: bool)
 method haveCommonKSubstring(k: nat, str1: seq<char>, str2: seq<char>) returns (found: bool)
 	requires |str1| > 0 && |str2| > 0
 {
-	var i := 0;
+	var biggerString;
+	var smallerString;
 	if |str1| > |str2|
 	{
-		while i < |str1|
-			invariant i >= 0
+		var isStr2ASubStringOfStr1 := isSubString(str2, str1);
+		if isStr2ASubStringOfStr1
 		{
-			
-
-			i := i + 1;
+			return true;
 		}
+		biggerString := str1;
+		smallerString := str2;
 	}
 	else
-	{
-		while i < |str2|
-			invariant i >= 0
+	{	
+		var isStr1ASubStringOfStr2 := isSubString(str1, str2);
+		if isStr1ASubStringOfStr2
 		{
-			
-			i := i + 1;
+			return true;
 		}
+		biggerString := str2;
+		smallerString := str1;
 	}
+	var i := 0;
+	var j := 0;
+	var matches := 0;
+	var foundMatch := false;
+	while i < |smallerString|
+		invariant i >= 0
+	{
+		if !foundMatch
+		{
+			while j < |biggerString|
+				invariant j >= 0
+			{
+				if smallerString[i] == biggerString[j]
+				{
+					matches := matches + 1;
+					foundMatch := true;
+				}
+				j := j + 1;
+			}
+		}
+		else
+		{
+			if j + 1 >= |biggerString|
+			{
+				foundMatch := false;
+			}
+			else
+			{
+				j := j + 1;
+				if smallerString[i] == biggerString[j]
+				{
+					matches := matches + 1;
+				}
+				else
+				{
+					foundMatch := false;
+					matches := 0;
+				}
+			}
+		}
+		if matches == k
+		{
+			return true;
+		}
+		i := i + 1;
+	}
+	return false;
 }
 
 method maxCommonSubstringLength(str1: seq<char>, str2: seq<char>) returns (len: nat)
