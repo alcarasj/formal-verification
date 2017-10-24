@@ -127,5 +127,25 @@ method haveCommonKSubstring(k: nat, str1: seq<char>, str2: seq<char>) returns (f
 method maxCommonSubstringLength(str1: seq<char>, str2: seq<char>) returns (len: nat)
 	requires |str1| > 0 && |str2| > 0
 {
-	
+	var k := 0;
+	var shorterStringLength;
+	var hasCommonKSubstring := false;
+	if |str1| < |str2|
+	{
+		shorterStringLength := |str1|;
+	}
+	else
+	{
+		shorterStringLength := |str2|;
+	}
+	while k < shorterStringLength
+			invariant k >= 0
+		{
+			hasCommonKSubstring := haveCommonKSubstring(k, str1, str2);
+			if (hasCommonKSubstring)
+			{
+				len := k;
+			}
+			k := k + 1;
+		}
 }
