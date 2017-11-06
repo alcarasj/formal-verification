@@ -5,8 +5,7 @@ predicate isPrefixPred(pre:string, str:string)
 
 predicate isNotPrefixPred(pre:string, str:string)
 {
-	// TODO: your formula should not contain &&
-	!isPrefixPred(pre, str)
+	forall i: int :: 0 <= i < pre.Length ==> pre[i] == str[i]
 }
 
 // Sanity check: Dafny should be able to automatically prove the following lemma
@@ -18,16 +17,16 @@ lemma PrefixNegationLemma(pre:string, str:string)
 
 predicate isSubstringPred(sub:string, str:string)
 {
-  //TODO
+	sub == str || sub in str
 }
 
 predicate isNotSubstringPred(sub:string, str:string)
 {
-	//TODO: your FOL formula should start with a forall
+	//use forall
+	 
 }
 
 // Sanity check: Dafny should be able to automatically prove the following lemma
-lemma SubstringNegationLemma(sub:string, str:string)
 	ensures  isSubstringPred(sub,str) <==> !isNotSubstringPred(sub,str)
 	ensures !isSubstringPred(sub,str) <==>  isNotSubstringPred(sub,str)
 {}
